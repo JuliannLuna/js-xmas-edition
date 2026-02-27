@@ -1,233 +1,218 @@
-Level 2 - Local storage
-=======================
+# Nivel 2 - Almacenamiento local
 
-  Let's do overview for our actions on level 2.
-  After the user fills in the form and it pass all validation:
+Hagamos una descripción general de nuestras acciones en el nivel 2.
+Después de que el usuario complete el formulario y pase toda la validación:
 
-  1. Once the user enters the values, in case of success validation
-     - Add the values (name and the gift as an object along with a unique id) 
-     to local storage.
-  2. When you are going to Wish List Page
-     - Retrieve the wishes from local storage
-     - Write the wishes to the DOM as a list of wishes
+1. Una vez que el usuario ingresa los valores, en caso de validación exitosa
+   - Añade los valores (nombre y el regalo como un objeto junto con un id único)
+     al almacenamiento local.
+2. Cuando vayas a la página de Lista de deseos
+   - Recupera los deseos del almacenamiento local
+   - Escribe los deseos en el DOM como una lista de deseos
 
-  3. When you are going to the Santa's gift page
-     - Here too we would read from local storage
-     - Random number generator and display the image
+3. Cuando vayas a la página de regalo de Santa
+   - Aquí también leeríamos del almacenamiento local
+   - Generador de números aleatorios y mostrar la imagen
 
+4. # Almacenamiento local
 
+Estamos obteniendo información del usuario y validando esa
+información, pero cuando actualizamos la página, esa información se
+pierde y el usuario tiene que escribirlo todo de nuevo.
 
-1.Local Storage
-=================
+¿No sería bueno si pudiéramos guardar la información que escribe
+el usuario en algún lugar y luego pudiéramos usar esa información, por ejemplo,
+para mostrarla?
 
+Aquí, el almacenamiento local viene al rescate (podemos reemplazar el
+almacenamiento local con una base de datos real cuando trabajemos con datos más
+avanzados. Lo que hace la base de datos es que proporciona una ubicación
+para almacenar los datos y cuando sea necesario podamos acceder a estos datos. Piensa en
+un frasco de galletas que es la base de datos y la galleta como los datos ;))
 
-  We are getting information from the user and validating that 
-  information but when we refresh the page, that information is 
-  lost and the user has to type in all over again. 
-  
-  Wouldn't it be nice if we could save the information that the 
-  user types somewhere and so could use that information, for example,
-  to display it.
+Entonces, ¿qué es el almacenamiento local?
+Es una función que permite a las páginas web almacenar información
+localmente en el navegador web del cliente usando un mecanismo de clave y valor.
+Una vez que añadimos los datos al almacenamiento local, estarán disponibles para siempre
+a menos que los eliminemos.
 
-  Here, the Local storage comes to the rescue (we can replace the 
-  local storage with an actual database when we will work with more 
-  advanced data. What the database does is that it provides a location 
-  to store the data and when needed we can access this data. Think of 
-  a cookie jar which is the database and the cookie as the data ;))
+Es una gran opción si no tienes backend (para que puedas conectarte a
+una base de datos) sino solo front-end.
 
-  So, what is a local storage?
-  It is a function which allows the web pages to store information 
-  locally on the client's web browser using a key and value mechanism.
-  Once we add the data to local storage, it will be available forever 
-  unless we delete it.
-  
-  It is great option if you do not have backend (so you can connect to 
-  database) but only front-end.
+Puedes ver la información almacenada en el almacenamiento local por:
 
-  You can view the information stored in the local storage by:
-  
-  TODO: 1. Open the web console window
-  
-  TODO: 2. Select the `Application` tab
-  
-  TODO: 3. Within the `Storage` Menu, click on the down arrow near 
-  `LocalStorage` option.
-  
-  TODO: 4. Select the file:// to view the local storage details saved.
+TODO: 1. Abre la ventana de la consola web
 
-  There is a chance that you would not have any data yet
+TODO: 2. Selecciona la pestaña `Application`
 
-  There are 2 storage options available:
-  1. window.localStorage - stores data with no expiration data.
-  2. window.sessionStorage - stores data for one session (data is lost when 
-  the browser tab is closed)
+TODO: 3. Dentro del menú `Storage`, haz clic en la flecha hacia abajo cerca
+de la opción `LocalStorage`.
 
-  We will use the `.localStorage` object.
+TODO: 4. Selecciona file:// para ver los detalles del almacenamiento local guardados.
 
-  With a local storage, we can either add contents to it, retrieve 
-  information from it or clear the local storage contents entirely which 
-  is explained in detail below
+Existe la posibilidad de que aún no tengas ningún dato.
 
-  Adding contents to local storage:
-    `localStorage.setItem(‘key’, value);`
+Hay 2 opciones de almacenamiento disponibles:
 
-  e.g: `const todos = $('#todos').html();`
-    `localStorage.setItem('todos', todos);`
+1. window.localStorage - almacena datos sin fecha de vencimiento.
+2. window.sessionStorage - almacena datos para una sesión (los datos se pierden cuando
+   se cierra la pestaña del navegador)
 
-  Retrieve information from local storage via the key:
-    `localStorage.getItem(‘key’)`
+Usaremos el objeto `.localStorage`.
 
-  e.g: 
-  ```
-    if(localStorage.getItem('todos')) {
-      $('#todos').html(localStorage.getItem('todos'));
+Con un almacenamiento local, podemos añadir contenido, recuperar
+información o limpiar completamente el contenido del almacenamiento local,
+lo cual se explica en detalle a continuación.
+
+Añadiendo contenido al almacenamiento local:
+`localStorage.setItem('clave', valor);`
+
+ejemplo: `const todos = $('#todos').html();`
+`localStorage.setItem('todos', todos);`
+
+Recuperar información del almacenamiento local a través de la clave:
+`localStorage.getItem('clave')`
+
+ejemplo:
+
+```
+  if(localStorage.getItem('todos')) {
+    $('#todos').html(localStorage.getItem('todos'));
+  }
+```
+
+Limpiar todo el contenido del almacenamiento local
+`window.localStorage.clear();`
+
+El almacenamiento local solo puede guardar cadenas, por lo que almacenar objetos requiere que
+se conviertan en cadenas (también conocido como serializar objetos, es decir,
+convertir un objeto a formato de cadena) usando JSON.stringify - no puedes
+pedirle al almacenamiento local que guarde un objeto directamente porque guardará
+"[object Object]", ¡que no es correcto en absoluto!
+
+Eso también significa que el objeto debe pasar por JSON.parse (también conocido como
+deserializar, es decir, convertir una cadena a un objeto) al salir del
+almacenamiento local:
+
+```
+localStorage.setItem('user', JSON.stringify({
+  username: 'htmldog',
+  api_key: 'abc123xyz789'
+}));
+
+const user = JSON.parse(localStorage.getItem('user'));
+```
+
+2. # Guardar datos en el almacenamiento local
+
+Ahora usemos esta información en la práctica...
+
+Hemos validado mucha información sobre el usuario, así que ahora guardemos
+eso en el almacenamiento local. Para hacerlo, sigue los siguientes pasos:
+
+TODO: 1. Crea una función con el nombre `saveDataToLocalStorage`.
+
+TODO: 2. Por ahora, solo queremos guardar el nombre y la descripción del regalo
+en el almacenamiento local. Entonces creemos 2 variables (`name` y
+`description`) que recopilen esta información del DOM.
+
+TODO: 3. Queremos una clave única para denotar el almacenamiento de datos para cada
+`name` y `description`. así que creemos nuestro propio índice de almacenamiento local:
+
+TODO: 4. Declara una variable global (al principio de la página)
+llamada `localStorageIndex` con valor `localStorage.length`
+
+TODO: 5. Nota: el `localStorage.length` debe ser cero cuando comencemos este tutorial, para eso
+necesitamos vaciar el contenido del almacenamiento local ya existente si lo hay.
+Esto se puede hacer escribiendo `window.localStorage.clear();` en la consola web.
+
+TODO: 6. Dentro de la función `saveDataToLocalStorage` crea otra
+variable llamada `key` con el valor `'user'+ localStorageIndex`. Esto
+establecerá una clave única para los datos.
+
+TODO: 7. Guarda los datos como un objeto en el almacenamiento local usando
+`setItem()`:
+
+```
+  localStorage.setItem(key, JSON.stringify(
+    {
+      username: name,
+      giftDescription: description
     }
-  ```
+  ));
+```
 
-  Clear all the local storage contents
-    `window.localStorage.clear();`
+Donde key es la `key` y value es el objeto serializado con propiedades
+`username` y `giftDescription`
 
+TODO: 8. Incrementa el `localStorageIndex` (esto asegurará que tengamos
+claves únicas para cada objeto) al final de nuestra función
+`saveDataToLocalStorage`.
 
-  Local storage can only save strings, so storing objects requires that 
-  they be turned into strings (also known as serializing objects i.e 
-  converting an object to a string format) using JSON.stringify - you 
-  can’t ask local storage to store an object directly because it’ll store 
-  “[object Object]”, which isn’t right at all!
-  
-  That also means the object must be run through JSON.parse ( also known 
-  as de-serializing i.e converting a string to an object) on the way out of 
-  local storage:
-   
-  ```
-  localStorage.setItem('user', JSON.stringify({
-    username: 'htmldog',
-    api_key: 'abc123xyz789'
-  }));
+TODO: 9. Llama a la función `saveDataToLocalStorage` dentro de la
+función `handleErrors` cuando no haya errores.
 
-  const user = JSON.parse(localStorage.getItem('user'));
-  ```
+TODO: 9. Pruébalo - actualiza tu `index.html` y luego añade la
+información - ve si las entidades se han añadido al almacenamiento local.
 
+¡Hurra! ¡Hemos añadido nuestros primeros datos al almacenamiento local!
 
-2.Save data to local storage
-=============================
+3. # Obtener datos del almacenamiento local
 
+Ahora querríamos mostrar la lista de deseos almacenados en el
+almacenamiento local en nuestra página de lista de deseos.
 
-  Now lets use this information on practice...
+TODO: 1. Creemos otra función llamada `displayWishes()`.
 
-  We have validated bunch of information about the user, so now lets save 
-  it to the local storage. To do so, follow next steps:
-  
-  TODO: 1. Create a function with the name `saveDataToLocalStorage`.
-  
-  TODO: 2. For now, we would only want to save the name and the gift 
-  description to local storage. So lets create 2 variables (`name` and 
-  `description`) that collects these information from the DOM.
-  
-  TODO: 3. We would want a unique key to denote the data storage for each 
-  `name` and `description`. so lets create our own local storage index:
-  
-  TODO: 4. Declare a  global variable (in the beginning of the page) 
-  called `localStorageIndex` with value as `localStorage.length`
-  
-  TODO: 5. Note: the `localStorage.length` needs to be Zero first when we 
-  begin this tutorial, for that we need to empty the already existing local 
-  storage contents if any. This can be done by typing 
-  `window.localStorage.clear();` in the web console.
-  
-  TODO: 6. Inside the function `saveDataToLocalStorage` create another 
-  variable called `key` with  the value `'user'+ localStorageIndex`. It
-  will set a unique key for the data.
-  
-  TODO: 7. Save the data as an object in the local storage by using the 
-  `setItem()`:
-  
-  ```
-    localStorage.setItem(key, JSON.stringify(
-      {
-        username: name,
-        giftDescription: description
-      }
-    ));
-  ```
-  
-  Where key is the `key` and value is the serialized object with properties 
-  `username` and `giftDescription`
+TODO: 2. Mostraremos nuestros deseos como un elemento de lista, así que obtén ese elemento
+del DOM en la variable `ul`.
 
-  TODO: 8. Increment the `localStorageIndex`(this will ensure that we have 
-  unique keys for each object) in the end of our function 
-  `saveDataToLocalStorage`.
-  
-  TODO: 9. Call the `saveDataToLocalStorage` function inside of the 
-  `handleErrors` function when we have no errors.
+TODO: 3. Necesitamos crear un bucle que recupere todos los elementos del
+almacenamiento local, así que el índice del bucle debe ser hasta el
+`localstorage.length`.
+El bucle debe hacer algunas cosas:
 
-  TODO: 9. Give it a try - refresh your `index.html` and then add the 
-  information - see if the entities have been added to the local storage.
-  
-  Yay !! We have added our first data to local storage !!
+- crea un elemento `li`.
+- obtén los datos del almacenamiento local para esa `userKey` y añádelos a `li`.
+  ejemplo: `li.appendChild(document.createTextNode(data.giftDescription));`
+- este elemento `li` debe añadirse al elemento `ul`
+  ejemplo: `ul.appendChild(li);`
+  El `appendChild()` añade el elemento `li` a `ul`. Aquí `ul` es el padre
+  y `li` es el hijo.
 
+Tenemos una función que mostraría la lista de deseos, pero ¿cuándo llamamos a esta función?
 
-3.Get data from local storage
-==============================
+Tan pronto como se cargue `wish-list.html`, necesitamos que todos los elementos se
+muestren. Así que llamamos a la función `displayWishes()` cuando el DOM se está cargando
+es decir, en el evento `onload`.
 
-  Now we would want to display the list of wishes stored in the local 
-  storage in our wish-list page. 
-   
-  TODO: 1. Lets create another function called `displayWishes()`.
+TODO: 4. Añade el `onload="displayWishes()"` en la etiqueta body de la
+página `wish-list.html`.
 
-  TODO: 2. We would display our wishes as a list item, so get that element 
-  from DOM in the variable `ul`.
-
-  TODO: 3. We need to create a loop that would fetch all the items from 
-  the local storage, so the index of the loop needs to be until the 
-  `localstorage.length`.
-  The loop must do few things:
-   - create an element `li`.
-   - get the data from local storage for that `userKey` and append it to `li`.
-     e.g: `li.appendChild(document.createTextNode(data.giftDescription));`
-   - this `li` element must be appended to the `ul` element
-     e.g: `ul.appendChild(li);`
-  The `appendChild()` adds the element `li` to `ul`. Here `ul` is the parent 
-  and `li` is the child.
-
-  We have a function, that would display the list of wishes, but when do we 
-  call this function?
-  
-  As soon as the `wish-list.html` loads, we need all the elements to be 
-  displayed. So we call the function `displayWishes()` when the DOM is loading 
-  i.e on the `onload` event.
-  
-  TODO: 4. Add the `onload="displayWishes()"` in the body tag of the 
-  `wish-list.html` page.
-
-  To check if all works good, refresh the `wish-list.html` page and see if 
-  it displays the items.
-
-
+Para verificar si todo funciona bien, actualiza la página `wish-list.html` y ve si
+muestra los elementos.
 
 //////////////////////////////////////////////////////////////////////////////////
 
-  Congratulations! You have finished Part 2!
-  
-  Stand up, stretch your legs, celebrate your achievement.
-  
-  Next step will be following up the instructions in level3.md file.
+¡Felicidades! ¡Has terminado la Parte 2!
+
+Levántate, estira las piernas, celebra tu logro.
+
+El siguiente paso será seguir las instrucciones en el archivo level3.md.
 
 //////////////////////////////////////////////////////////////////////////////////
 
+# NOTAS
 
-NOTES
-======
+**Ventajas de usar almacenamiento local**
 
+- más seguro
+- se puede almacenar una gran cantidad de datos localmente y no afectaría el rendimiento
+  del sitio web y tiene un límite de almacenamiento de al menos 5MB
+- la información nunca se transfiere al servidor
+- los datos se pueden almacenar para siempre, no tienen fecha de vencimiento
+- los datos no se pierden cuando se cierra el navegador y están disponibles en cualquier momento
+  a menos que los eliminemos manualmente
 
-  **Advantages of using local storage** 
-  
-   - more secure
-   - large amount of data can be stored locally and it would not affect the 
-     website performance and has the storage limit of at least 5MB
-   - information is never transferred to the server
-   - data can be stored for ever, it does not have an expiry date
-   - data is not lost when the browser is closed and is available at any time 
-     unless we delete it manually
-
-  Local storage is per origin (per domain and protocol). All pages, from one 
-  origin, can store and access the same data.
+El almacenamiento local es por origen (por dominio y protocolo). Todas las páginas, de un
+origen, pueden almacenar y acceder a los mismos datos.
