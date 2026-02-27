@@ -80,7 +80,7 @@ Usaremos la lista de descripciones de regalos en el almacenamiento local (¡Espe
 2. Este número aleatorio se puede usar para obtener la descripción del regalo en esa ubicación (usa la clave como `user + 'randomNo'`) en el almacenamiento local.
 3. Mostrar el nombre de `gift.description` en el DOM usando el `querySelector` para `.santa-gift-text`.
 
-**TODO:** Comprobemos si esto funciona correctamente llamando a la función en la sección `<body>` de la página `result.html` usando el evento `onLoad`.
+**TODO:** Comprobemos si esto funciona correctamente llamando a la función en la sección `<body>` de la página `result.html` usando el evento `onload`.
 
 Mostrar solo el comportamiento y la descripción del regalo es aburrido, así que vamos a jugar con algunas imágenes.
 
