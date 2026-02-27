@@ -1,174 +1,137 @@
-Level 3. Randomize function
+## Nivel 3. Función de aleatorización
+
 ===========================
 
-  To get a random number in a particular range
-  1. Random function to use for good/bad/naughty
-  2. Random function to use for user key (gift)
-  3. Display the Image (when we have the time)
+Para obtener un número aleatorio en un rango específico:
 
+1. Función aleatoria para usar en bueno/malo/travieso.
+2. Función aleatoria para usar en la clave de usuario (regalo).
+3. Mostrar la imagen (cuando tengamos tiempo).
 
-Additional Tasks
------------
+### Tareas Adicionales
 
-  1. Working with image:
-     -  image upload
-     -  image validation (size/type/hight/width)
-     -  save to local storage
-     -  retrieve from local storage
-  2. Ajax calls (Flickr retrieval)
+---
 
+1. **Trabajando con imágenes:**
 
+- Subida de imagen
+- Validación de imagen (tamaño/tipo/alto/ancho)
+- Guardar en el almacenamiento local (_local storage_)
+- Recuperar del almacenamiento local
 
-  Level 1 gets the information from the user. 
-  Level 2 displays part of that information to the user as a list. 
-  Now lets get to the fun part of level 3.
+2. **Llamadas Ajax** (recuperación de Flickr)
 
+El Nivel 1 obtiene la información del usuario.
+El Nivel 2 muestra parte de esa información al usuario como una lista.
+Ahora vayamos a la parte divertida del nivel 3.
 
-Math.random
+## Math.random
+
 ============
 
-  The aim here is based on the user Inputs
-   - Determine if the user was Very Good, Good or Naughty
-   - Identify the gift the person asked for
-   - Send the gift to the user (as an Image, not the real one !!!)
+El objetivo aquí se basa en las entradas del usuario:
 
-  Oh and now we are not acting as santa's but as cheeky little imps.. 
-  So we are getting a bit naughty and mixing up the gifts that Santa 
-  gives out. How do we mix things up... By messing with the inputs that 
-  we display in the `result.html`
+- Determinar si el usuario fue Muy Bueno, Bueno o Travieso.
+- Identificar el regalo que pidió la persona.
+- Enviar el regalo al usuario (¡como una imagen, no uno de verdad!).
 
-  First lets create a random number generator function, that would take 
-  the limit as an the input and then returns any random number from 0 to 
-  that limit .
+Ah, y ahora no estamos actuando como Papá Noel sino como pequeños duendes traviesos... Así que nos pondremos un poco malos y mezclaremos los regalos que reparte Papá Noel. ¿Cómo mezclamos las cosas? Alterando las entradas que mostramos en `result.html`.
 
-  To do that, we would use JavaSript's built-in Object called `Math` which 
-  as the name indicates, has properties and methods for Mathematical 
-  functions and constants (e.g : Math.PI, Math.SQRT, etc). There are many 
-  built in objects like that available in javascript such as Date, String, 
-  Array, etc.
+Primero, creemos una función generadora de números aleatorios, que tome el límite como entrada y luego devuelva cualquier número aleatorio desde 0 hasta ese límite.
 
-  For more Math functions/ constants available refer: 
-  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math 
+Para hacer eso, usaremos el objeto incorporado de JavaScript llamado `Math` que, como su nombre indica, tiene propiedades y métodos para funciones y constantes matemáticas (ej.: `Math.PI`, `Math.SQRT`, etc.). Hay muchos objetos incorporados de este tipo disponibles en JavaScript, como `Date`, `String`, `Array`, etc.
 
-  TODO: For the Random number generator function, lets use the following 
-  formula
-    `Math.floor(Math.random() * limit) + 1;`
+Para obtener más funciones/constantes de Math disponibles, consulta:
+[https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Math](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Math)
 
-  Now lets get a random behaviour for the user - the three types of 
-  behaviour are Very Good, Good and Naughty.
-  
-  TODOD: Create an object with these 3 behaviour types. (Remember Objects 
-  from  Level 1 and 2 !!!). For easy access, let the key of the objects be 
-  as numbers:
-  
-  ```
-    const BehaviourList = {
-       1: 'Very Good',
-       2: 'Good',
-       3: 'Naughty'
-    }
-  ```
-  
-  TODO: The next step is to create a function called `getRandomBehaviour()`. 
-  The function should do the following:
-   1. Get the random number from 0..3 (since we have 3 behaviour types, we 
-   set the limit to 3) by calling the `randomNumberGenerator()` function.
-   2. Using this random number as the key, get the behaviour from Behaviour 
-   list e.g: `randomBehaviour =  BehaviourList[randomNumber]`.
-   3. Display the Behaviour in the DOM, using the query selector for 
-   `.attitude` class.
+**TODO:** Para la función generadora de números aleatorios, usemos la siguiente fórmula:
+`Math.floor(Math.random() * limit) + 1;`
 
-  After creating the function, lets check if this works correctly by calling 
-  the function in the `<body>` section of `result.html` page using the `onLoad` 
-  event.
+Ahora obtengamos un comportamiento aleatorio para el usuario; los tres tipos de comportamiento son Muy Bueno (_Very Good_), Bueno (_Good_) y Travieso (_Naughty_).
 
-  Yuppiee, the implementation is able to modify the behaviour of the user 
-  every time the user refreshes the `result.html` page!!!
+**TODO:** Crea un objeto con estos 3 tipos de comportamiento. (¡Recuerda los Objetos de los Niveles 1 y 2!). Para facilitar el acceso, dejaremos que las claves de los objetos sean números:
 
-  Now that we have done the behaviour bit and its kind of fun lets mess 
-  with the gifts..
+```javascript
+const BehaviourList = {
+  1: "Very Good",
+  2: "Good",
+  3: "Naughty",
+};
+```
 
-  We would use the list of gifts description in the local storage (Hope 
-  you haven't forgotten the local storage in level 2 !!) and use the similar 
-  steps as above and get random gift.
+**TODO:** El siguiente paso es crear una función llamada `getRandomBehaviour()`. La función debería hacer lo siguiente:
 
-  TODO: Lets name the function as `getRandomGift()` and this would do the 
-  following:
-   1. Get the random number using `getRandomNumber()` function. Note here the 
-   limit should be the number of gifts in local storage, so we can use the 
-   `localStorageIndex` count.
-   P.S: Since we increment the `localStorgaeIndex` after adding new gift, 
-   the index value would be 1 count extra, so we need to use the limit as 
-   `localStorageIndex-1`
-   2. This random number can be used to get the gift description at that location 
-   (use the key as `user + 'randonmNo'`) in local storage.
-   3. Display the `gift.description` name in DOM by using the query selector 
-   `.santa-gift-text`.
+1. Obtener el número aleatorio del 0 al 3 (como tenemos 3 tipos de comportamiento, establecemos el límite en 3) llamando a la función `randomNumberGenerator()`.
+2. Usando este número aleatorio como clave, obtener el comportamiento de la lista de Comportamientos, ej.: `randomBehaviour = BehaviourList[randomNumber]`.
+3. Mostrar el Comportamiento en el DOM, usando el `querySelector` para la clase `.attitude`.
 
-  TODO: Lets check if this works correctly by calling the function in the 
-  `<body>` section of `result.html` page using the `onLoad` event.
+Después de crear la función, comprobemos si esto funciona correctamente llamando a la función en la sección `<body>` de la página `result.html` usando el evento `onLoad`.
 
-  Just displaying the behaviour and gift description is boring, so lets play 
-  with some images.
+¡Yupi, la implementación es capaz de modificar el comportamiento del usuario cada vez que se actualiza la página `result.html`!
 
-  We have some images of gifts in the img/gifts folder. we would randomly display 
-  one of those images and display them in the `result.html` page
+Ahora que hemos hecho la parte del comportamiento y es bastante divertida, vamos a jugar con los regalos...
 
-  TODO: Lets create an object called `ImageUrlList` which would contain the 
-  key as numbers and the value as the imageUrl with names:
-  
-  ```
-     const imageUrlList = {
-        1: 'img/gifts/goldGift.jpg',
-        2: 'img/gifts/groupGift.jpeg',
-        3: 'img/gifts/redGift.jpg'
-     };
-  ```
-  
-  Here again we are using numbers as key so that it would be easy to use the 
-  `randomNumber` generator to get the images.
+Usaremos la lista de descripciones de regalos en el almacenamiento local (¡Espero que no hayas olvidado el _local storage_ en el nivel 2!) y usaremos pasos similares a los anteriores para obtener un regalo aleatorio.
 
-  TODO: After that, lets create a function called `getGiftImage()`. This should:
-   1. Get the random number (depending on the number of images in the folder, 
-   for now its 3) if you add more images, you can increment the limit accordingly.
-   2. Get the image url using the random number from the `imageUrlList` i.e 
-   `imageUrlList[randomNumber]`.
-   3. Set the url as the source of the DOM element `.santa-gift` in `result.html`
-   
-  ```
-     function getGiftImage() {
-        const element = document.querySelector('.santa-gift');
-        const randomNo = getRandomNumber(3);
-        const giftImageUrl = imageUrlList[randomNo];
-        element.src = giftImageUrl;
-     };
-  ```
-  
-  You can check the function, by calling it in the `onLoad` event in the `<body>` 
-  section.
+**TODO:** Nombremos la función como `getRandomGift()` y esta haría lo siguiente:
 
-  Now the final Bit, We have 3 functions, but we call each one individually in 
-  the DOM using the `onLoad()` event.
-  
-  It would be really nice if we could call all the three functions when the page 
-  loads. How we can achieve it?
+1. Obtener el número aleatorio usando la función `getRandomNumber()`. Ten en cuenta que aquí el límite debe ser el número de regalos en el almacenamiento local, por lo que podemos usar la cuenta de `localStorageIndex`.
+   _P.D: Dado que incrementamos el `localStorageIndex` después de agregar un nuevo regalo, el valor del índice tendrá 1 cuenta extra, por lo que debemos usar el límite como `localStorageIndex - 1`._
+2. Este número aleatorio se puede usar para obtener la descripción del regalo en esa ubicación (usa la clave como `user + 'randomNo'`) en el almacenamiento local.
+3. Mostrar el nombre de `gift.description` en el DOM usando el `querySelector` para `.santa-gift-text`.
 
-  One way is to call all the three functions inside another function say 
-  `fillContent()` and then just call the `fillContent()` method in the `Onload()` 
-  event.
-  
-  Go on.. give it a try..
-  If all the DOM elements are loaded simultaneously.. Then everything works fine..
+**TODO:** Comprobemos si esto funciona correctamente llamando a la función en la sección `<body>` de la página `result.html` usando el evento `onLoad`.
 
+Mostrar solo el comportamiento y la descripción del regalo es aburrido, así que vamos a jugar con algunas imágenes.
 
+Tenemos algunas imágenes de regalos en la carpeta `img/gifts`. Mostraremos aleatoriamente una de esas imágenes y las visualizaremos en la página `result.html`.
+
+**TODO:** Creemos un objeto llamado `ImageUrlList` que contenga números como claves y la URL de la imagen como valores con los nombres:
+
+```javascript
+const imageUrlList = {
+  1: "img/gifts/goldGift.jpg",
+  2: "img/gifts/groupGift.jpeg",
+  3: "img/gifts/redGift.jpg",
+};
+```
+
+Aquí nuevamente estamos usando números como clave para que sea fácil usar el generador `randomNumber` para obtener las imágenes.
+
+**TODO:** Después de eso, creemos una función llamada `getGiftImage()`. Esta debería:
+
+1. Obtener el número aleatorio (dependiendo de la cantidad de imágenes en la carpeta, por ahora son 3); si agregas más imágenes, puedes incrementar el límite en consecuencia.
+2. Obtener la url de la imagen usando el número aleatorio de `imageUrlList`, es decir, `imageUrlList[randomNumber]`.
+3. Establecer la url como la fuente (_source_) del elemento del DOM `.santa-gift` en `result.html`.
+
+```javascript
+function getGiftImage() {
+  const element = document.querySelector(".santa-gift");
+  const randomNo = getRandomNumber(3);
+  const giftImageUrl = imageUrlList[randomNo];
+  element.src = giftImageUrl;
+}
+```
+
+Puedes comprobar la función, llamándola en el evento `onLoad` en la sección `<body>`.
+
+Ahora la parte final. Tenemos 3 funciones, pero llamamos a cada una individualmente en el DOM usando el evento `onLoad()`.
+
+Sería genial si pudiéramos llamar a las tres funciones cuando se cargue la página. ¿Cómo podemos lograrlo?
+
+Una forma es llamar a las tres funciones dentro de otra función, digamos `fillContent()`, y luego simplemente llamar al método `fillContent()` en el evento `onLoad()`.
+
+Adelante... inténtalo...
+Si todos los elementos del DOM se cargan simultáneamente... Entonces todo funciona bien...
+
+---
 
 /////////////////////////////////////////////////////////////////////////////////
 
-  Congratulations! You have finished the intermediate Level !
-  
-  Celebrate your achievement !!
-  
-  You could try the extra steps if you want to try more stuffs
+¡Felicidades! ¡Has terminado el Nivel Intermedio!
+
+¡Celebra tu logro!
+
+Puedes intentar los pasos extra si quieres probar más cosas.
 
 /////////////////////////////////////////////////////////////////////////////////
-
