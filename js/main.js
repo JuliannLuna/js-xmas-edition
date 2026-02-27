@@ -1,3 +1,6 @@
+let indexAlmacenamientoLocal = localStorage.length;
+// window.localStorage.clear(); // Borra todos los datos almacenados localmente en el navegador
+
 function validarNombre(nombre) {
   if (nombre.length === 0) {
     return "Este campo debe contener al menos 1 caracter";
@@ -50,6 +53,7 @@ function validarFormulario(event) {
 
   const esExito = manejarErrores(errores) === 0;
   if (esExito) {
+    guardarDatosAlmacenamientoLocal();
     $form.classList.add("oculto");
     document.querySelector("#exito").classList.remove("oculto");
     setTimeout(() => (window.location.href = "wishlist.html"), 5000);
@@ -87,3 +91,44 @@ function manejarErrores(errores) {
 
 const $form = document.querySelector("#carta-a-santa");
 $form.onsubmit = validarFormulario;
+
+// Esta funcion se encargara de almacenar el nombre y la descripcion del regalo
+// que el usuario haya ingresado para que pueda ser
+// visualizado en el archivo wishlist.html
+function guardarDatosAlmacenamientoLocal() {
+  const nombreUsuario = document.querySelector("[name=nombre]").value;
+  const descripcionRegalo = document.querySelector(
+    "[name=descripcion-regalo]",
+  ).value;
+
+  // localStorage.setItem("nombre", nombreUsuario);
+  // localStorage.setItem("descripcion", descripcionRegalo);
+
+  const key = "usuario" + indexAlmacenamientoLocal;
+
+  localStorage.setItem(
+    key,
+    JSON.stringify({
+      nombre: nombreUsuario,
+      "descripcion-regalo": descripcionRegalo,
+    }),
+  );
+
+  indexAlmacenamientoLocal++;
+}
+
+function mostrarDeseos() {
+  const elementoLista = document.querySelector(".wish-list");
+  const cantidadDeseos = localStorage.length;
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const usuario = JSON.parse(localStorage.getItem("usuario" + i));
+    const elementoItemLista = document.createElement("li");
+    elementoItemLista.textContent =
+      "Nombre:" +
+      usuario.nombre +
+      " Descripción Regalo: " +
+      usuario["descripcion-regalo"];
+    elementoLista.appendChild(elementoItemLista);
+  }
+}
