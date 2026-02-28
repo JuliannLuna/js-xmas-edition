@@ -1,5 +1,21 @@
-let indexAlmacenamientoLocal = localStorage.length;
+const indexAlmacenamientoLocal = localStorage.length;
 // window.localStorage.clear(); // Borra todos los datos almacenados localmente en el navegador
+
+const listaDireccionImg = {
+  1: "img/gifts/goldGift.jpg",
+  2: "img/gifts/groupGift.jpeg",
+  3: "img/gifts/redGift.jpg",
+};
+
+const tiposComportamientos = {
+  1: "Muy bueno",
+  2: "Bueno",
+  3: "Mas o Menos",
+};
+
+/*============= NIVEL 1 =============*/
+const $form = document.querySelector("#carta-a-santa");
+$form.onsubmit = validarFormulario;
 
 function validarNombre(nombre) {
   if (nombre.length === 0) {
@@ -89,8 +105,7 @@ function manejarErrores(errores) {
   return cantidadErrores;
 }
 
-const $form = document.querySelector("#carta-a-santa");
-$form.onsubmit = validarFormulario;
+/*============= NIVEL 2 =============*/
 
 // Esta funcion se encargara de almacenar el nombre y la descripcion del regalo
 // que el usuario haya ingresado para que pueda ser
@@ -113,10 +128,13 @@ function guardarDatosAlmacenamientoLocal() {
       "descripcion-regalo": descripcionRegalo,
     }),
   );
-
-  indexAlmacenamientoLocal++;
 }
 
+/* 
+Extrae los nombres y regalos almacenados localmente
+en el navegador y los añade a la lista mediante la
+creacion de un elemento <li>
+ */
 function mostrarDeseos() {
   const elementoLista = document.querySelector(".wish-list");
   const cantidadDeseos = localStorage.length;
@@ -131,4 +149,69 @@ function mostrarDeseos() {
       usuario["descripcion-regalo"];
     elementoLista.appendChild(elementoItemLista);
   }
+}
+
+/*============= NIVEL 3 =============*/
+
+/* 
+Numero aleatorio entre 0 y el parametro `limite`
+  - Math.floor redondea numero hacia abajo.
+  - Math.random() genera numero entre 0 y 1 con decimales.
+*/
+function obtenerNumeroAleatorioHasta(limite) {
+  const numeroAleatorio = Math.floor(Math.random() * limite) + 1;
+
+  return numeroAleatorio;
+}
+
+/*
+Se obtiene un numero aleatorio entre 0 y 2
+la cual servira para obtener un comportamiento
+aleatorio que se mostrara en la pagina
+*/
+function obtenerComportamientoAleatorio() {
+  const numAleatorio = obtenerNumeroAleatorioHasta(3);
+  const comportamiento = tiposComportamientos[numAleatorio];
+  const regalo = obtenerRegaloAleatorio();
+  document.querySelector(".attitude").textContent = comportamiento;
+  document.querySelector(".santa-gift-text").textContent = regalo;
+}
+
+/*
+Funcion que obtiene un numero aleatorio
+entre 0 y la cantidad de regalos ingresados
+para poder extraer un regalo aleatorio.
+Por ejemplo, el regalo de usuario0, donde 0 se 
+obtuvo aleatoriamente, sera el mostrado.
+*/
+function obtenerRegaloAleatorio() {
+  const numAleatorio = obtenerNumeroAleatorioHasta(
+    indexAlmacenamientoLocal - 1, // El numero aleatorio obtenido omite el numero 0, por eso resto 1 al resultado
+  );
+  const usuarioAleatorio = JSON.parse(
+    localStorage.getItem("usuario" + numAleatorio),
+  );
+  const regaloAleatorio = usuarioAleatorio["descripcion-regalo"];
+  return regaloAleatorio;
+}
+
+/*
+Funcion que obtiene un numero aleatorio
+entre 1 y 3 (o cantidad de imagenes) almacenadas
+para poder mostrar aleatoriamente.
+*/
+function obtenerImgRegaloAleatorio() {
+  const numAleatorio = obtenerNumeroAleatorioHasta(3);
+  const direccionamiento = listaDireccionImg[numAleatorio];
+  const imgRegalo = document.querySelector(".santa-gift");
+  imgRegalo.src = direccionamiento;
+}
+
+/* 
+Funcion que llama a las funciones obtenerImgRegaloAleatorio() y obtenerComportamientoAleatorio()
+*/
+
+function llenarContenido() {
+  obtenerComportamientoAleatorio();
+  obtenerImgRegaloAleatorio();
 }
